@@ -37,6 +37,8 @@ public: //Metodos publicos
 	void sort(bool asc = true);
 	bool empty();
 	void randomFill(int max, int length);
+	void *getFirst();
+	void concat(List &list);
 };
 
 #endif

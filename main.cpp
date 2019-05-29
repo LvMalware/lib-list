@@ -5,11 +5,14 @@ int
 main()
 {
 	//TESTES
-	List a("A");
+	List a("A"), b("B");
 	a.randomFill(50,10);
+	b.randomFill(50,5);
 	a.show();
-	std::cout << "------ SORT ------ "<<std::endl;
-	a.sort(true);
+	b.show();
+	a.concat(b);
+	a.show();
+	a.sort();
 	a.show();
 	return 0;
 }

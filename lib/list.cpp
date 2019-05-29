@@ -106,6 +106,7 @@ List::clear() //Limpa a lista, desalocando todos os Items da memoria
 		delete current;
 		current = start;
 	}
+	first = NULL;
 	count = 0;
 }
 
@@ -124,13 +125,13 @@ List::setName(const char* nname) //Define um nome para a lista
 void
 List::show() //Exibe os dados armazenados na lista
 {
-	std::cout << name << (name.empty()?"":" = ") << "[ ";
+	std::cout << name << (name.empty()?"":" = ") << "[  ";
 	Item *current = first;
 	while (current){
 		std::cout << current->data << ", ";
 		current = current->next;
 	}
-	std::cout << "\b\b ]"<<std::endl;
+	std::cout << "\b\b  ]"<<std::endl;
 }
 
 void
@@ -214,4 +215,18 @@ List::randomFill(int max, int length) //Adiciona length Items a lista, contendo 
 	randomize(); //Redefine a semente para geracao dos numeros
 	for (int i=0; i<length; i++)
 		insert(rand()%max); //insere na lista
+}
+void*
+List::getFirst() //Retorna um ponteiro para o primeiro elemento da lista (como void, para nao expor a estrutura Item)
+{
+	return (void *) first;
+}
+void
+List::concat(List &list) //Concatena uma lista a essa, copiando cada elemento para o final dela
+{
+	Item *start = (Item *) list.getFirst(); // Recebe um ponteiro para o primeiro elemento da lista (fazendo casting explicito para converter de void* para Item*)
+	while (start){ // Enquanto o ponteiro nao aponta para NULL (isto e, nao chega ao fim da lista)
+		insert(start->data); //Chama a funcao de insercao, adicionando o dado ao fim da lista atual
+		start = start->next; //Atualiza o ponteiro fazendo-o apontar para o proximo item
+	}
 }
