@@ -19,12 +19,11 @@ private: //Metodos e atributos privados
 	int count;
 	std::string name;
 	Item* getItemAt(int index);
-	void randomize();
 public: //Metodos publicos
 	List(const char* lname);
 	List();
 	~List();
-	TYPE getAt(int index);
+	TYPE& getAt(int index);
 	void insertAt(TYPE value, int index);
 	void insert(TYPE value);
 	void removeAt(int index);
@@ -40,7 +39,10 @@ public: //Metodos publicos
 	void randomFill(int max, int length);
 	void concat(const List &list);
 	List operator+(const List &list);
-	List operator=(const List &list);
+	List &operator=(const List &list);
+	TYPE& operator[](int index);
+	std::string toString();
+	List operator<<(int n);
 };
 
 #endif

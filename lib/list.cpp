@@ -21,7 +21,6 @@ List::List() //Construtor da Classe (com parametro nome)
 
 List::~List() //Destrutor da classe
 {
-	std::cout<<"Destruindo: "<<this->getName()<<std::endl;
 	clear(); //Limpa todos os items alocados
 }
 
@@ -46,7 +45,7 @@ List::getItemAt(int index) //Retorna um Item da Lista dado seu indice
 	return NULL;
 }
 
-TYPE
+TYPE&
 List::getAt(int index) //Retorna o valor do dado guardado no Item dado seu indice
 {
 	return getItemAt(index)->data; //faz uso da funcao getItemAt para encontrar o item
@@ -204,7 +203,7 @@ List::empty(){ //Verifica se a lista esta vazia
 	return count == 0;
 }
 void
-List::randomize(){ //Esta funcao redefine a semente utilizada para gerar numeros aleatorios
+randomize(){ //Esta funcao redefine a semente utilizada para gerar numeros aleatorios
 	static bool alreadyDone = false; //Esta variavel indica se isto ja foi feito por essa mesma instancia
 	if (!alreadyDone){ //Garante que a semente so sera redefinida uma vez por cada instancia de List
 		srand(time(NULL));
@@ -238,7 +237,7 @@ List::operator+(const List &list) //Sobrecarga do operador +, para concatenacao 
 	return r; //Retorna a lista resultante
 }
 
-List
+List&
 List::operator=(const List &list) //Sobrecarga do operador = para atribuicao de listas
 {
 	
@@ -252,7 +251,48 @@ List::operator=(const List &list) //Sobrecarga do operador = para atribuicao de 
 	return *this; //Retorna esta lista
 }
 int
-List::getCount()
+List::getCount() //Retorna o numero de elementos da lista
 {
 	return count;
+}
+TYPE&
+List::operator[](int index) //Sobrecarga do operador [], tornando a lista indexavel
+{
+	return getAt(index);
+}
+
+std::string
+List::toString() //Retorna uma string que representa a lista
+{
+	std::string list;
+	if (!name.empty()) //Coloca o nome da lista caso este nao seja vazio
+		list = name + " = ";
+	list +="[  ";
+	Item *i=first;
+	while (i){
+		list += std::to_string(i->data);
+		if (i->next)
+			list += ", ";
+		i = i->next;
+	}
+	list += "  ]";
+	return list;
+}
+
+List
+List::operator<<(int n) //Desloca os elementos da lista n posicoes a esquerda
+{
+	List l;
+	Item *start, *end;
+	end = start = getItemAt(n%count); //Pega o n-esimo elemento da lista (imagine-a sendo circular)
+	while (start){			//Enquanto o ponteiro nao for nulo (antes do fim da lista)
+		l.insert(start->data); //Adiciona na lista l
+		start=start->next; //Proximo elemento
+	}
+	start=first; //Comecando o primeiro elemento da lista
+	while (start != end){ //Enquanto nao chegar ao n-esimo elemento
+		l.insert(start->data);  //Adiciona o dado na lista l
+		start=start->next;	//Proximo elemento
+	}
+	return l;
 }
