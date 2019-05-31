@@ -6,6 +6,7 @@
 List::List(const char* lname) //Construtor da Classe (com parametro nome)
 {
 	//Inicializa atributos da classe
+
 	name  = lname;
 	count = 0;
 	first = NULL;
@@ -20,6 +21,7 @@ List::List() //Construtor da Classe (com parametro nome)
 
 List::~List() //Destrutor da classe
 {
+	std::cout<<"Destruindo: "<<this->getName()<<std::endl;
 	clear(); //Limpa todos os items alocados
 }
 
@@ -216,17 +218,41 @@ List::randomFill(int max, int length) //Adiciona length Items a lista, contendo 
 	for (int i=0; i<length; i++)
 		insert(rand()%max); //insere na lista
 }
-void*
-List::getFirst() //Retorna um ponteiro para o primeiro elemento da lista (como void, para nao expor a estrutura Item)
-{
-	return (void *) first;
-}
+
 void
-List::concat(List &list) //Concatena uma lista a essa, copiando cada elemento para o final dela
+List::concat(const List &list) //Concatena uma lista a essa, copiando cada elemento para o final dela
 {
-	Item *start = (Item *) list.getFirst(); // Recebe um ponteiro para o primeiro elemento da lista (fazendo casting explicito para converter de void* para Item*)
-	while (start){ // Enquanto o ponteiro nao aponta para NULL (isto e, nao chega ao fim da lista)
-		insert(start->data); //Chama a funcao de insercao, adicionando o dado ao fim da lista atual
-		start = start->next; //Atualiza o ponteiro fazendo-o apontar para o proximo item
+	Item *item = list.first;
+	while (item){
+		insert(item->data);
+		item = item->next;
 	}
+}
+
+List
+List::operator+(const List &list) //Sobrecarga do operador +, para concatenacao de listas
+{
+	List r; //Cria uma nova instancia de List
+	r.concat(*this); //Copia cada elemento desta lista para a nova instancia
+	r.concat(list); // ------------------- da lista list ------------------
+	return r; //Retorna a lista resultante
+}
+
+List
+List::operator=(const List &list) //Sobrecarga do operador = para atribuicao de listas
+{
+	
+	clear(); //Limpa a lista
+	//concat(list); //Copia cada elemento da lista que esta sendo atribuida a esta
+	Item *item = list.first;
+	while (item){
+		insert(item->data);
+		item = item->next;
+	}
+	return *this; //Retorna esta lista
+}
+int
+List::getCount()
+{
+	return count;
 }

@@ -30,6 +30,7 @@ public: //Metodos publicos
 	void removeAt(int index);
 	void clear();
 	std::string getName();
+	int getCount();
 	void setName(const char* nname);
 	void show();
 	void array(TYPE *v);
@@ -37,8 +38,9 @@ public: //Metodos publicos
 	void sort(bool asc = true);
 	bool empty();
 	void randomFill(int max, int length);
-	void *getFirst();
-	void concat(List &list);
+	void concat(const List &list);
+	List operator+(const List &list);
+	List operator=(const List &list);
 };
 
 #endif
